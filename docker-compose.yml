@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  node-app:
+    build: .
+    image: node-app
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017/ielts
+    ports:
+      - '4000:3003'
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/node-app
+    networks:
+      - node-network
+
+  mongodb:
+    image: mongo:5.0.10-focal
+    ports:
+      - '27021:27017'
+    volumes:
+      - mongo_5_0_10_focal:/data/db
+    networks:
+      - node-network
+
+volumes:
+  mongo_5_0_10_focal:
+
+networks:
+  node-network:
+    driver: bridge
